@@ -1,8 +1,7 @@
-const SignIn = () => {
-    return (
-        <div>
-            Sign in
-        </div>
-    )
-}
-export default SignIn
+"use client";
+import { SignUpCard } from "@/features/auth/components/sign-up-card";
+
+const SignUp = () => {
+	return <SignUpCard />;
+};
+export default SignUp;
