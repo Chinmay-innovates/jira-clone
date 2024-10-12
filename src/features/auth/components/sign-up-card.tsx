@@ -1,4 +1,4 @@
-import { z } from "zod";
+"use client";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
@@ -22,12 +22,12 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { registerSchema } from "../schemas";
+import { type RegisterSchema, registerSchema } from "../schemas";
 import { useRegister } from "../api/use-register";
 
 export const SignUpCard = () => {
-	const { mutate } = useRegister();
-	const form = useForm<z.infer<typeof registerSchema>>({
+	const { mutate, isPending } = useRegister();
+	const form = useForm<RegisterSchema>({
 		resolver: zodResolver(registerSchema),
 		defaultValues: {
 			name: "",
@@ -36,7 +36,7 @@ export const SignUpCard = () => {
 		},
 	});
 
-	const onSubmit = (values: z.infer<typeof registerSchema>) => {
+	const onSubmit = (values: RegisterSchema) => {
 		mutate({ json: values });
 	};
 	return (
@@ -108,7 +108,7 @@ export const SignUpCard = () => {
 								</FormItem>
 							)}
 						/>
-						<Button className="w-full" size="lg" disabled={false}>
+						<Button className="w-full" size="lg" disabled={isPending}>
 							Register
 						</Button>
 					</form>
@@ -119,7 +119,7 @@ export const SignUpCard = () => {
 			</div>
 			<CardContent className="p-7 flex flex-col gap-y-2">
 				<Button
-					disabled={false}
+					disabled={isPending}
 					variant="secondary"
 					size="lg"
 					className="w-full"
@@ -128,7 +128,7 @@ export const SignUpCard = () => {
 					Login with Google
 				</Button>
 				<Button
-					disabled={false}
+					disabled={isPending}
 					variant="secondary"
 					size="lg"
 					className="w-full"

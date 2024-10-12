@@ -1,4 +1,4 @@
-import { z } from "zod";
+"use client";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
@@ -17,12 +17,12 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 
-import { loginSchema } from "../schemas";
+import { type LoginSchema, loginSchema } from "../schemas";
 import { useLogin } from "../api/use-login";
 
 export const SignInCard = () => {
-	const { mutate } = useLogin();
-	const form = useForm<z.infer<typeof loginSchema>>({
+	const { mutate, isPending } = useLogin();
+	const form = useForm<LoginSchema>({
 		resolver: zodResolver(loginSchema),
 		defaultValues: {
 			email: "",
@@ -30,7 +30,7 @@ export const SignInCard = () => {
 		},
 	});
 
-	const onSubmit = (values: z.infer<typeof loginSchema>) => {
+	const onSubmit = (values: LoginSchema) => {
 		mutate({ json: values });
 	};
 	return (
@@ -76,7 +76,7 @@ export const SignInCard = () => {
 								</FormItem>
 							)}
 						/>
-						<Button className="w-full" size="lg" disabled={false}>
+						<Button className="w-full" size="lg" disabled={isPending}>
 							Login
 						</Button>
 					</form>
@@ -87,7 +87,7 @@ export const SignInCard = () => {
 			</div>
 			<CardContent className="p-7 flex flex-col gap-y-4">
 				<Button
-					disabled={false}
+					disabled={isPending}
 					variant="secondary"
 					size="lg"
 					className="w-full"
@@ -96,7 +96,7 @@ export const SignInCard = () => {
 					Login with Google
 				</Button>
 				<Button
-					disabled={false}
+					disabled={isPending}
 					variant="secondary"
 					size="lg"
 					className="w-full"
