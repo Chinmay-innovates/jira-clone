@@ -1,5 +1,9 @@
 "use client";
+import { useRef } from "react";
+import Image from "next/image";
+import { ImageIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { DottedSeparator } from "@/components/dotted-separator";
@@ -14,14 +18,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { type CreateWorkspaceSchema, createWorkspaceSchema } from "../schemas";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { cn } from "@/lib/utils";
 
 import { useCreateWorkspace } from "../api/use-create-workspace";
-import { useRef } from "react";
-import Image from "next/image";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ImageIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+
+import { type CreateWorkspaceSchema, createWorkspaceSchema } from "../schemas";
 
 interface CreateWorkspaceFormProps {
 	onCancel?: () => void;
@@ -150,6 +152,7 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
 								variant="secondary"
 								onClick={onCancel}
 								disabled={isPending}
+								className={cn(!onCancel && "invisible")}
 							>
 								Cancel
 							</Button>
