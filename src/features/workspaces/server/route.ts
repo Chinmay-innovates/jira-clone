@@ -129,5 +129,43 @@ const app = new Hono()
 
 			return c.json({ data: updatedWorkspace });
 		}
-	);
+	)
+	.delete("/:workspaceId", sessionMiddleware, async (c) => {
+		const databases = c.get("databases");
+		const user = c.get("user");
+		const { workspaceId } = c.req.param();
+		const member = await getMember({
+			databases,
+			workspaceId,
+			userId: user.$id,
+		});
+		if (!member || member.role !== MemberRole.ADMIN) {
+			return c.json({ error: "Unauthorized" }, 401);
+		}
+		// TODO: delete members, projects, tasks
+		await databases.deleteDocument(DATABASE_ID, WORKSPACE_ID, workspaceId);
+		return c.json({ data: { $id: workspaceId } });
+	})
+	.post("/:workspaceId/reset-invite-code", sessionMiddleware, async (c) => {
+		const databases = c.get("databases");
+		const user = c.get("user");
+		const { workspaceId } = c.req.param();
+		const member = await getMember({
+			databases,
+			workspaceId,
+			userId: user.$id,
+		});
+		if (!member || member.role !== MemberRole.ADMIN) {
+			return c.json({ error: "Unauthorized" }, 401);
+		}
+		const workspace = await databases.updateDocument(
+			DATABASE_ID,
+			WORKSPACE_ID,
+			workspaceId,
+			{
+				inviteCode: generateInviteCode(INVITECODE_LENGTH),
+			}
+		);
+		return c.json({ data: workspace });
+	});
 export default app;
