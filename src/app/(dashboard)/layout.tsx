@@ -1,10 +1,12 @@
 import { PropsWithChildren } from "react";
 import { Navbar } from "@/components/navbar";
 import { Sidebar } from "@/components/sidebar";
+import { CreateWorkspaceModal } from "@/features/workspaces/components/create-workspace-modal";
 
 const DashboardLayout = ({ children }: PropsWithChildren) => {
 	return (
 		<div className="min-h-screen">
+			<CreateWorkspaceModal />
 			<div className="flex h-full w-full">
 				<div className="fixed left-0 top-0 hidden lg:block lg:w-[264px] h-full overflow-y-auto">
 					<Sidebar />
