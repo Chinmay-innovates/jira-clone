@@ -1,6 +1,9 @@
 "use client";
-import { DottedSeparator } from "@/components/dotted-separator";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
+import { DottedSeparator } from "@/components/dotted-separator";
 import {
 	Card,
 	CardContent,
@@ -8,23 +11,22 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import Link from "next/link";
+
 import { useJoinWorkspace } from "../api/use-join-workspace";
-import { useWorkspaceId } from "../hooks/use-workspace-id";
-import { useInviteCode } from "../hooks/use-invite-code";
-import { useRouter } from "next/navigation";
 
 interface JoinWorkspaceFormProps {
 	initialValues: {
 		name: string;
 	};
+	code: string;
+	workspaceId: string;
 }
 export const JoinWorkspaceForm = ({
 	initialValues,
+	code: inviteCode,
+	workspaceId,
 }: JoinWorkspaceFormProps) => {
 	const router = useRouter();
-	const workspaceId = useWorkspaceId();
-	const inviteCode = useInviteCode();
 	const { mutate, isPending } = useJoinWorkspace();
 
 	const onSubmit = () => {

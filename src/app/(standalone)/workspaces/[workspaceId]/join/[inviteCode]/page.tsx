@@ -6,6 +6,7 @@ import { JoinWorkspaceForm } from "@/features/workspaces/components/join-workspa
 interface WorkspaceIdJoinPageProps {
 	params: {
 		workspaceId: string;
+		inviteCode: string;
 	};
 }
 const WorkspaceIdJoinPage = async ({ params }: WorkspaceIdJoinPageProps) => {
@@ -20,7 +21,11 @@ const WorkspaceIdJoinPage = async ({ params }: WorkspaceIdJoinPageProps) => {
 
 	return (
 		<div className="w-full lg:max-w-xl">
-			<JoinWorkspaceForm initialValues={workspaceInfo} />
+			<JoinWorkspaceForm
+				initialValues={workspaceInfo}
+				code={params.inviteCode}
+				workspaceId={params.workspaceId}
+			/>
 		</div>
 	);
 };
