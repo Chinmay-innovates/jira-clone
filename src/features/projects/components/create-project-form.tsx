@@ -26,11 +26,11 @@ import { cn } from "@/lib/utils";
 import { useCreateProject } from "../api/use-create-project";
 import { type CreateProjectSchema, createProjectSchema } from "../schemas";
 
-interface CreateProjectForm {
+interface CreateProjectFormProps {
 	onCancel?: () => void;
 }
 
-export const CreateProjectForm = ({ onCancel }: CreateProjectForm) => {
+export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
 	const workspaceId = useWorkspaceId();
 	const router = useRouter();
 	const { mutate, isPending } = useCreateProject();

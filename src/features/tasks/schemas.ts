@@ -10,3 +10,5 @@ export const createTaskSchema = z.object({
 	dueDate: z.coerce.date(),
 	description: z.string().optional(),
 });
+
+export type CreateTaskSchema = z.infer<typeof createTaskSchema>;
