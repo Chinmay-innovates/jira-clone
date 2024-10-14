@@ -141,9 +141,9 @@ export const CreateTaskForm = ({
 														</div>
 													</SelectItem>
 												))}
+												<FormMessage />
 											</SelectContent>
 										</Select>
-										<FormMessage />
 									</FormItem>
 								)}
 							/>
@@ -172,9 +172,9 @@ export const CreateTaskForm = ({
 															.replace(/\b\w/g, (char) => char.toUpperCase())}
 													</SelectItem>
 												))}
+												<FormMessage />
 											</SelectContent>
 										</Select>
-										<FormMessage />
 									</FormItem>
 								)}
 							/>
@@ -207,9 +207,9 @@ export const CreateTaskForm = ({
 														</div>
 													</SelectItem>
 												))}
+												<FormMessage />
 											</SelectContent>
 										</Select>
-										<FormMessage />
 									</FormItem>
 								)}
 							/>
