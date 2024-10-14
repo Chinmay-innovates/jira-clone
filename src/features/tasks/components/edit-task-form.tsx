@@ -32,10 +32,10 @@ import {
 	createTaskSchema,
 } from "@/features/tasks/schemas";
 
-import { TaskStatus } from "../types";
-import { useCreateTask } from "../api/use-create-task";
+import { TaskStatus, Task } from "../types";
+import { useUpdateTask } from "../api/use-update-task";
 
-interface CreateTaskFormProps {
+interface EditTaskFormProps {
 	onCancel?: () => void;
 	projectOptions: {
 		id: string;
@@ -46,30 +46,36 @@ interface CreateTaskFormProps {
 		id: string;
 		name: string;
 	}[];
+	initialValues: Task;
 }
 
-export const CreateTaskForm = ({
+export const EditTaskForm = ({
 	onCancel,
 	memberOptions,
 	projectOptions,
-}: CreateTaskFormProps) => {
+	initialValues,
+}: EditTaskFormProps) => {
 	const workspaceId = useWorkspaceId();
 	const router = useRouter();
-	const { mutate, isPending } = useCreateTask();
+	const { mutate, isPending } = useUpdateTask();
 	const form = useForm<CreateTaskSchema>({
-		resolver: zodResolver(createTaskSchema.omit({ workspaceId: true })),
+		resolver: zodResolver(
+			createTaskSchema.omit({ workspaceId: true, description: true })
+		),
 		defaultValues: {
-			workspaceId,
+			...initialValues,
+			dueDate: initialValues.dueDate
+				? new Date(initialValues.dueDate)
+				: undefined,
 		},
 	});
 	const onSumit = (values: CreateTaskSchema) => {
 		mutate(
-			{ json: { ...values, workspaceId } },
+			{ json: values, param: { taskId: initialValues.$id } },
 			{
 				onSuccess: () => {
 					form.reset();
 					onCancel?.();
-					// TODO: redirect to new task
 				},
 			}
 		);
@@ -78,7 +84,7 @@ export const CreateTaskForm = ({
 	return (
 		<Card className="size-full border-none shadow-none">
 			<CardHeader className="flex p-7">
-				<CardTitle className="text-xl font-bold">Create new task</CardTitle>
+				<CardTitle className="text-xl font-bold">Edit a task</CardTitle>
 			</CardHeader>
 			<div className="px-7">
 				<DottedSeparator />
@@ -227,7 +233,7 @@ export const CreateTaskForm = ({
 								Cancel
 							</Button>
 							<Button disabled={isPending} type="submit" size="lg">
-								Create Task
+								Save Changes
 							</Button>
 						</div>
 					</form>
