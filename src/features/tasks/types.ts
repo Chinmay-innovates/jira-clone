@@ -1,3 +1,13 @@
+import { Models } from "node-appwrite";
+export type Task = Models.Document & {
+	name: string;
+	status: TaskStatus;
+	assigneeId: string;
+	projectId: string;
+	position: number;
+	dueDate: string;
+};
+
 export enum TaskStatus {
 	BACKlOG = "BACKLOG",
 	TODO = "TODO",

@@ -42,12 +42,9 @@ export const useGetTasks = ({
 			if (!response.ok) {
 				throw new Error("Failed to get tasks");
 			}
-			const { documents, total } = await response.json();
+			const { data } = await response.json();
 
-			return {
-				total,
-				documents,
-			};
+			return data;
 		},
 	});
 
