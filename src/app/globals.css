@@ -10,6 +10,29 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    border-radius: 4px;
+  }
+  .scrollbar::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #d2d2d8;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #aeaeb1;
+    border-radius: 50px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #020202;
+  }
+
 }
 
 @layer base {
