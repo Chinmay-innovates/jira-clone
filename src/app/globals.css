@@ -84,3 +84,9 @@ body {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+@layer components {
+  .dot {
+    @apply size-1 rounded-full bg-neutral-300;
+  }
+}

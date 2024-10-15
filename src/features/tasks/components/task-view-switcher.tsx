@@ -19,6 +19,7 @@ import { columns } from "./columns";
 
 import { TaskStatus } from "../types";
 import { useBulkUpdateTasks } from "../api/use-bulk-update-tasks";
+import { DataCalander } from "./data-calander";
 
 export const TaskViewSwitcher = () => {
 	const [{ status, dueDate, assigneeId, projectId }] = useTaskFilter();
@@ -97,8 +98,8 @@ export const TaskViewSwitcher = () => {
 								data={tasks?.documents ?? []}
 							/>
 						</TabsContent>
-						<TabsContent value="calendar" className="mt-0">
-							Data Calendar
+						<TabsContent value="calendar" className="mt-0 h-full pb-4">
+							<DataCalander data={tasks?.documents ?? []} />
 						</TabsContent>
 					</>
 				)}

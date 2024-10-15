@@ -25,7 +25,7 @@ export const KanbanCard = ({ task }: KanbanCardProps) => {
 					name={task.assignee.name}
 					fallbackClassName="text-[10px]"
 				/>
-				<div className="size-1 rounded-full bg-neutral-300" />
+				<div className="dot" />
 				<TaskDate value={task.dueDate} className="text-xs" />
 			</div>
 			<div className="flex items-center gap-x-1.5">
