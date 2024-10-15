@@ -16,7 +16,7 @@ body {
     height: 10px;
     border-radius: 4px;
   }
-  .scrollbar::-webkit-scrollbar-button {
+  ::-webkit-scrollbar-button {
     display: none;
   }
 
@@ -28,11 +28,6 @@ body {
     background: #aeaeb1;
     border-radius: 50px;
   }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: #020202;
-  }
-
 }
 
 @layer base {
