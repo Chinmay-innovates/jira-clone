@@ -1,19 +1,24 @@
 "use client";
+import { useCallback } from "react";
+import { useQueryState } from "nuqs";
 import { Loader, Plus } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { DottedSeparator } from "@/components/dotted-separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import { useCreateTaskModal } from "../hooks/use-create-task-modal";
-import { useGetTasks } from "../api/use-get-tasks";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
-import { useQueryState } from "nuqs";
-import { DataFilters } from "./data-filters";
-import { useTaskFilter } from "../hooks/use-task-filter";
 
+import { useCreateTaskModal } from "../hooks/use-create-task-modal";
+import { useTaskFilter } from "../hooks/use-task-filter";
+import { useGetTasks } from "../api/use-get-tasks";
+import { DataFilters } from "./data-filters";
+import { DataKanban } from "./data-kanban";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
-import { DataKanban } from "./data-kanban";
+
+import { TaskStatus } from "../types";
+import { useBulkUpdateTasks } from "../api/use-bulk-update-tasks";
 
 export const TaskViewSwitcher = () => {
 	const [{ status, dueDate, assigneeId, projectId }] = useTaskFilter();
@@ -23,6 +28,7 @@ export const TaskViewSwitcher = () => {
 	});
 	const { open } = useCreateTaskModal();
 	const workspaceId = useWorkspaceId();
+	const { mutate: bulkUpdate } = useBulkUpdateTasks();
 	const { data: tasks, isLoading: tasksLoading } = useGetTasks({
 		workspaceId,
 		assigneeId,
@@ -30,6 +36,21 @@ export const TaskViewSwitcher = () => {
 		dueDate,
 		status,
 	});
+
+	const onKanbanChange = useCallback(
+		(
+			tasks: {
+				$id: string;
+				status: TaskStatus;
+				position: number;
+			}[]
+		) => {
+			bulkUpdate({
+				json: { tasks },
+			});
+		},
+		[]
+	);
 	return (
 		<Tabs
 			defaultValue={view}
@@ -71,7 +92,10 @@ export const TaskViewSwitcher = () => {
 							<DataTable columns={columns} data={tasks?.documents ?? []} />
 						</TabsContent>
 						<TabsContent value="kanban" className="mt-0">
-							<DataKanban data={tasks?.documents ?? []} />
+							<DataKanban
+								onChange={onKanbanChange}
+								data={tasks?.documents ?? []}
+							/>
 						</TabsContent>
 						<TabsContent value="calendar" className="mt-0">
 							Data Calendar

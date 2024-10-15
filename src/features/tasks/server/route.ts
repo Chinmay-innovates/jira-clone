@@ -12,7 +12,6 @@ import { createAdminClient } from "@/lib/appwrite";
 import { createTaskSchema } from "../schemas";
 import { Task, TaskStatus } from "../types";
 import { Project } from "@/features/projects/types";
-import { getProject } from "@/features/projects/queries";
 const app = new Hono()
 	.delete("/:taskId", sessionMiddleware, async (c) => {
 		const databases = c.get("databases");
@@ -285,6 +284,70 @@ const app = new Hono()
 				assignee,
 			},
 		});
-	});
+	})
+	.post(
+		"/bulk-update",
+		sessionMiddleware,
+		zValidator(
+			"json",
+			z.object({
+				tasks: z.array(
+					z.object({
+						$id: z.string(),
+						status: z.nativeEnum(TaskStatus),
+						position: z.number().int().positive().min(1000).max(1_000_000),
+					})
+				),
+			})
+		),
+		async (c) => {
+			const databases = c.get("databases");
+			const user = c.get("user");
+			const { tasks } = c.req.valid("json");
+
+			const taskToUpdate = await databases.listDocuments<Task>(
+				DATABASE_ID,
+				TASKS_ID,
+				[
+					Query.contains(
+						"$id",
+						tasks.map((task) => task.$id)
+					),
+				]
+			);
+			const workspaceIds = new Set(
+				taskToUpdate.documents.map((task) => task.workspaceId)
+			);
+
+			if (workspaceIds.size !== 1) {
+				return c.json({
+					error: "All tasks must belong to the same workspace",
+				});
+			}
+			const workspaceId = workspaceIds.values().next().value;
+			if (!workspaceId) throw new Error("No workspace found");
+
+			const member = await getMember({
+				databases,
+				workspaceId,
+				userId: user.$id,
+			});
+			if (!member) {
+				return c.json({ error: "Unauthorized" }, 401);
+			}
+
+			const updatedTasks = await Promise.all(
+				tasks.map(async (task) => {
+					const { $id, position, status } = task;
+					return databases.updateDocument<Task>(DATABASE_ID, TASKS_ID, $id, {
+						status,
+						position,
+					});
+				})
+			);
+
+			return c.json({ data: updatedTasks });
+		}
+	);
 
 export default app;
