@@ -1,6 +1,5 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { DottedSeparator } from "@/components/dotted-separator";
@@ -54,7 +53,6 @@ export const CreateTaskForm = ({
 	projectOptions,
 }: CreateTaskFormProps) => {
 	const workspaceId = useWorkspaceId();
-	const router = useRouter();
 	const { mutate, isPending } = useCreateTask();
 	const form = useForm<CreateTaskSchema>({
 		resolver: zodResolver(createTaskSchema.omit({ workspaceId: true })),
@@ -62,7 +60,7 @@ export const CreateTaskForm = ({
 			workspaceId,
 		},
 	});
-	const onSumit = (values: CreateTaskSchema) => {
+	const onSubmit = (values: CreateTaskSchema) => {
 		mutate(
 			{ json: { ...values, workspaceId } },
 			{
@@ -85,7 +83,7 @@ export const CreateTaskForm = ({
 			</div>
 			<CardContent className="p-7">
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSumit)}>
+					<form onSubmit={form.handleSubmit(onSubmit)}>
 						<div className="flex flex-col gap-y-4">
 							<FormField
 								control={form.control}

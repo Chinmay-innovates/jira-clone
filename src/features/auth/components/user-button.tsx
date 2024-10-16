@@ -11,7 +11,6 @@ import { DottedSeparator } from "@/components/dotted-separator";
 
 import { useCurrent } from "../api/use-curent";
 import { useLogout } from "../api/use-logout";
-import { log } from "console";
 
 export const UserButton = () => {
 	const { mutate: logout } = useLogout();
