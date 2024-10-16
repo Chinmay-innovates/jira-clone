@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { type RegisterSchema, registerSchema } from "../schemas";
 import { useRegister } from "../api/use-register";
+import {signUpWithGithub} from "@/lib/oauth";
 
 export const SignUpCard = () => {
 	const { mutate, isPending } = useRegister();
@@ -118,16 +118,17 @@ export const SignUpCard = () => {
 				<DottedSeparator />
 			</div>
 			<CardContent className="p-7 flex flex-col gap-y-2">
+				{/*<Button*/}
+				{/*	disabled={isPending}*/}
+				{/*	variant="secondary"*/}
+				{/*	size="lg"*/}
+				{/*	className="w-full"*/}
+				{/*>*/}
+				{/*	<FcGoogle className="size-5 mr-2" />*/}
+				{/*	Login with Google*/}
+				{/*</Button>*/}
 				<Button
-					disabled={isPending}
-					variant="secondary"
-					size="lg"
-					className="w-full"
-				>
-					<FcGoogle className="size-5 mr-2" />
-					Login with Google
-				</Button>
-				<Button
+					onClick={()=>signUpWithGithub()}
 					disabled={isPending}
 					variant="secondary"
 					size="lg"

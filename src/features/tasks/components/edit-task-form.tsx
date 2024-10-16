@@ -1,6 +1,5 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { DottedSeparator } from "@/components/dotted-separator";
@@ -24,7 +23,6 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { MemberAvatar } from "@/features/members/components/members-avatar";
 import {
@@ -55,8 +53,6 @@ export const EditTaskForm = ({
 	projectOptions,
 	initialValues,
 }: EditTaskFormProps) => {
-	const workspaceId = useWorkspaceId();
-	const router = useRouter();
 	const { mutate, isPending } = useUpdateTask();
 	const form = useForm<CreateTaskSchema>({
 		resolver: zodResolver(
@@ -69,7 +65,7 @@ export const EditTaskForm = ({
 				: undefined,
 		},
 	});
-	const onSumit = (values: CreateTaskSchema) => {
+	const onSubmit = (values: CreateTaskSchema) => {
 		mutate(
 			{ json: values, param: { taskId: initialValues.$id } },
 			{
@@ -91,7 +87,7 @@ export const EditTaskForm = ({
 			</div>
 			<CardContent className="p-7">
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSumit)}>
+					<form onSubmit={form.handleSubmit(onSubmit)}>
 						<div className="flex flex-col gap-y-4">
 							<FormField
 								control={form.control}

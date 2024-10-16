@@ -1,7 +1,6 @@
 "use client";
 import { useRef } from "react";
 import Image from "next/image";
-import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,7 +43,7 @@ export const EditProjectForm = ({
 		useDeleteProject();
 
 	const [DeleteWorkspaceDialog, confirmDelete] = useConfirm(
-		"Delte project",
+		"Delete project",
 		"Are you sure you want to delete this project?",
 		"destructive"
 	);

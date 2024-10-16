@@ -118,7 +118,7 @@ const app = new Hono()
 					const user = await users.get(member.userId);
 					return {
 						...member,
-						name: user.name,
+						name: user.name || user.email,
 						email: user.email,
 					};
 				})
@@ -273,7 +273,7 @@ const app = new Hono()
 
 		const assignee = {
 			...member,
-			name: user.name,
+			name: user.name || user.email,
 			email: user.email,
 		};
 
@@ -325,7 +325,9 @@ const app = new Hono()
 				});
 			}
 			const workspaceId = workspaceIds.values().next().value;
-			if (!workspaceId) throw new Error("No workspace found");
+			if (!workspaceId) {
+				return c.json({error:"Workspace Id is required"},400)
+			}
 
 			const member = await getMember({
 				databases,

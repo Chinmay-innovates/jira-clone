@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 
+import { useProjectId } from "@/features/projects/hooks/use-projectId";
 import { useCreateTaskModal } from "../hooks/use-create-task-modal";
 import { useTaskFilter } from "../hooks/use-task-filter";
 import { useGetTasks } from "../api/use-get-tasks";
@@ -35,11 +36,12 @@ export const TaskViewSwitcher = ({
 	});
 	const { open } = useCreateTaskModal();
 	const workspaceId = useWorkspaceId();
+	const paramProjectId = useProjectId();
 	const { mutate: bulkUpdate } = useBulkUpdateTasks();
 	const { data: tasks, isLoading: tasksLoading } = useGetTasks({
 		workspaceId,
 		assigneeId,
-		projectId,
+		projectId: paramProjectId || projectId,
 		dueDate,
 		status,
 	});

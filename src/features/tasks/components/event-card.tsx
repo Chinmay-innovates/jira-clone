@@ -1,5 +1,7 @@
+import React from "react";
 import { useRouter } from "next/navigation";
 
+import {Member} from "@/features/members/types";
 import { Project } from "@/features/projects/types";
 import { MemberAvatar } from "@/features/members/components/members-avatar";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
@@ -13,7 +15,7 @@ interface EventCardProps {
 	title: string;
 	project: Project;
 	status: TaskStatus;
-	assignee: any;
+	assignee: Member;
 }
 const statusColorMap: Record<TaskStatus, string> = {
 	[TaskStatus.BACKlOG]: "border-l-pink-500",

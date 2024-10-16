@@ -30,7 +30,7 @@ const localizer = dateFnsLocalizer({
 	getDay,
 	locales,
 });
-interface DataCalanderProps {
+interface DataCalendarProps {
 	data: Task[];
 }
 
@@ -63,7 +63,7 @@ const CustomToolbar = ({ onNavigate, date }: CustomToolbarProps) => {
 	);
 };
 
-export const DataCalander = ({ data }: DataCalanderProps) => {
+export const DataCalander = ({ data }: DataCalendarProps) => {
 	const [value, setValue] = useState(
 		data.length > 0 ? new Date(data[0].dueDate) : new Date()
 	);
