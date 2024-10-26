@@ -182,4 +182,3 @@ export const SignInCard = () => {
   );
 };
 
-export default SignInCard;
